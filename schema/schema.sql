@@ -6,7 +6,7 @@ CREATE TABLE locations (
 CREATE TABLE tasks (
   id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   description VARCHAR(100) NOT NULL,
-  completed_at DATETIME, -- could additionally/instead use an enum for status if changing state is important to track
+  completed_at DATETIME,
   location_id INT(11) NOT NULL,
 
   FOREIGN KEY(location_id) REFERENCES locations(id) ON DELETE CASCADE
@@ -21,7 +21,7 @@ CREATE TABLE workers (
 CREATE TABLE logged_time (
   id INT(11) AUTO_INCREMENT PRIMARY KEY,
   time_seconds INT(11) NOT NULL,
-  location_id INT(11) NOT NULL, --speeds up db query. assuming you don't need location name from this call
+  location_id INT(11) NOT NULL,
   task_id INT(11) NOT NULL,
   worker_id INT(11) NOT NULL,
 
@@ -38,7 +38,7 @@ VALUES
   ("Boise"),
   ("Lakeview"),
   ("Cedarville"),
-  ("No task location");
+  ("No tasks location");
 
 
 INSERT INTO
@@ -60,16 +60,16 @@ VALUES
   ("Bob", 100.00),
   ("Chandran", 199.99),
   ("Daneen", 75.50),
-  ("New hire who hasn't logged time yet", 123.45);
+  ("Newbie who hasn't worked yet", 123.45);
 
 INSERT INTO
-  logged_time (time_seconds, task_id, worker_id)
+  logged_time (time_seconds, location_id, task_id, worker_id)
 VALUES
-  (3600, 1, 1),
-  (7200, 1, 2),
-  (3600, 2, 3),
-  (36000, 2, 4),
-  (3600, 3, 3),
-  (7200, 4, 2),
-  (360, 5, 1),
-  (3600, 6, 1);
+  (3600, 1, 1, 1),
+  (7200, 1, 1, 2),
+  (3600, 1, 2, 3),
+  (36000, 1, 2, 4),
+  (3600, 2, 3, 3),
+  (7200, 2, 4, 2),
+  (360, 3, 5, 1),
+  (3600, 4, 6, 1);
