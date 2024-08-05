@@ -1,25 +1,35 @@
-export const validateQueryParams = async(workerIds, locationIds, excludeIncomplete) => {
+export const validateQueryParams = async (
+  workerIds,
+  locationIds,
+  includedTasks,
+) => {
   const errors = [];
 
-  if (!validString(workerIds)) {
+  if (!validNumberString(workerIds)) {
     errors.push("workerIds must be a string of comma-separated integers");
-  };
+  }
 
-  if (!validString(locationIds)) {
+  if (!validNumberString(locationIds)) {
     errors.push("locationIds must be a string of comma-separated integers");
-  };
+  }
 
-  if (!isBool(excludeIncomplete)) {
-    errors.push("excludeIncomplete must have a value of true or false")
-  };
+  if (!validTaskType(includedTasks)) {
+    errors.push(
+      "includedTasks must have a value of 'complete' or 'incomplete'",
+    );
+  }
 
   return errors;
 };
 
-function validString(param) {
-  return /^[0-9][0-9,]*$/.test(param) || typeof param == 'undefined';
-};
+function validNumberString(param) {
+  return /^[0-9][0-9,]*$/.test(param) || typeof param == "undefined";
+}
 
-function isBool(param) {
-  return param === "true" || param === "false" || typeof param == 'undefined';
-};
+function validTaskType(param) {
+  return (
+    param === "complete" ||
+    param === "incomplete" ||
+    typeof param == "undefined"
+  );
+}

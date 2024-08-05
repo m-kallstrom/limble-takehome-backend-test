@@ -1,21 +1,25 @@
-export const buildWhereClauses = async (workerIds, locationIds, excludeIncomplete) => {
+export const buildWhereClauses = async (
+  workerIds,
+  locationIds,
+  includedTasks,
+) => {
   const whereClauses = [];
 
-  if (typeof workerIds != 'undefined') {
+  if (typeof workerIds !== "undefined") {
     whereClauses.push(`w.id IN (${workerIds})`);
-  }; 
+  }
 
-  if (typeof locationIds != 'undefined') {
-    whereClauses.push(`lt.location_id IN (${locationIds})`)
-  };
+  if (typeof locationIds !== "undefined") {
+    whereClauses.push(`lt.location_id IN (${locationIds})`);
+  }
 
-  if (typeof excludeIncomplete != 'undefined' && excludeIncomplete === "true") {
-    whereClauses.push("t.completed_at IS NOT NULL");
-  };
+  if (typeof includedTasks !== "undefined") {
+    if (includedTasks === "complete") {
+      whereClauses.push("t.completed_at IS NOT NULL");
+    } else if (includedTasks === "incomplete") {
+      whereClauses.push("t.completed_at IS NULL");
+    }
+  }
 
-  if (whereClauses.length >= 1) {
-    return (`WHERE ${whereClauses.join(' AND ')}`)
-  } else {
-    return ""
-  };
+  return whereClauses.length >= 1 ? `WHERE ${whereClauses.join(" AND ")}` : "";
 };
