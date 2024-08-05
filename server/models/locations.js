@@ -1,10 +1,10 @@
 import { db_connect } from "../db/database.js"
 import { buildWhereClauses } from "../helpers/whereClauseBuilder.js"
 
-export const queryLocation = async (workerIds, locationIds, excludeIncomplete) => {
+export const queryLocation = async (workerIds, locationIds, includedTasks) => {
   const db = await db_connect();
 
-  const whereClauses = await buildWhereClauses(workerIds, locationIds, excludeIncomplete)
+  const whereClauses = await buildWhereClauses(workerIds, locationIds, includedTasks)
   const query = await buildDbQuery(whereClauses);
   const data = await db.query(query);
 

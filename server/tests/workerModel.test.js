@@ -37,7 +37,7 @@ describe ('a string of specific worker ids are passed', () => {
   });
 });
 
-describe ('incomplete tasks are excluded', () => {
+describe ('not all tasks are included', () => {
   test('it returns all worker records from all locations but only for complete tasks', async () => {
     const expected_data = [
       {"id":1, "labor_total":"15.00"},
@@ -45,7 +45,18 @@ describe ('incomplete tasks are excluded', () => {
       {"id":3, "labor_total":"199.99"},
       {"id":4, "labor_total":"755.00"}
     ]
-    const result = await queryWorker(undefined, undefined, "true")
+    const result = await queryWorker(undefined, undefined, "complete")
+
+    expect(result).toEqual(expected_data);
+  });
+
+  test('it returns all worker records from all locations but only for incomplete tasks', async () => {
+    const expected_data = [
+      {"id":1, "labor_total":"300.00"},
+      {"id":2, "labor_total":"200.00"},
+      {"id":3, "labor_total":"199.99"}
+    ]
+    const result = await queryWorker(undefined, undefined, "incomplete")
 
     expect(result).toEqual(expected_data);
   });
@@ -78,7 +89,7 @@ describe ('incomplete tasks excluded, specific worker ids, specific location ids
     const expected_data = [
       {"id":4, "labor_total":"755.00"}
     ]
-    const result = await queryWorker("4", "1", "true")
+    const result = await queryWorker("4", "1", "complete")
 
     expect(result).toEqual(expected_data);
   });
