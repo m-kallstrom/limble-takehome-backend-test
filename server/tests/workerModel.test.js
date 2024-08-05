@@ -45,7 +45,7 @@ describe ('incomplete tasks are excluded', () => {
       {"id":3, "labor_total":"199.99"},
       {"id":4, "labor_total":"755.00"}
     ]
-    const result = await queryWorker(undefined, undefined, true)
+    const result = await queryWorker(undefined, undefined, "true")
 
     expect(result).toEqual(expected_data);
   });
@@ -78,7 +78,7 @@ describe ('incomplete tasks excluded, specific worker ids, specific location ids
     const expected_data = [
       {"id":4, "labor_total":"755.00"}
     ]
-    const result = await queryWorker("4", "1", true)
+    const result = await queryWorker("4", "1", "true")
 
     expect(result).toEqual(expected_data);
   });
